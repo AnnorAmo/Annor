@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "Product": {
+      "title": "Product",
+      "description": "A product available for purchase.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Name of the product" },
+        "description": { "type": "string", "description": "Detailed description" },
+        "price": { "type": "number", "description": "Price in USD" },
+        "imageUrl": { "type": "string", "description": "URL to product image" },
+        "category": { "type": "string", "description": "Product category" },
+        "stock": { "type": "integer", "description": "Available quantity" }
+      },
+      "required": ["name", "price", "imageUrl", "category", "stock"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User profile information.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "customer"] }
+      },
+      "required": ["email", "role"]
+    },
+    "Cart": {
+      "title": "Cart",
+      "description": "User's shopping cart.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "productId": { "type": "string" },
+              "quantity": { "type": "integer" }
+            }
+          }
+        }
+      }
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A completed purchase.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "items": { "type": "array" },
+        "totalAmount": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "processing", "shipped", "delivered"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    }
+  },
+  "firestore": {
+    "/products/{productId}": { "schema": "Product", "description": "Global product catalog" },
+    "/users/{userId}": { "schema": "User", "description": "User profiles" },
+    "/carts/{userId}": { "schema": "Cart", "description": "User-specific shopping carts" },
+    "/orders/{orderId}": { "schema": "Order", "description": "Customer orders" }
+  }
+}
